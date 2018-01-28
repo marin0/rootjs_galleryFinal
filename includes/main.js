@@ -24,9 +24,23 @@ function initiateApp(){
 		//on change, rebuild the images array into the new order
 	*/
 	makeGallery(pictures);
-	addModalCloseHandler();
+	$("figure").on('click',addModalCloseHandler);
 }
 function makeGallery(imageArray){
+	var galleryHTML=[]
+
+	for (var i = imageArray.length - 1; i >= 0; i--) {
+		
+		$("#gallery").append("<figure></figure>");
+		$("figure:not(.imageGallery)").css("background-image","url("+imageArray[i]+")");
+		$("figure:not(.imageGallery)").html("<figcaption></figcaption>");
+		$("figure:not(.imageGallery) figcaption").text(imageArray[i]);
+		$("figure:not(.imageGallery)").attr("class","imageGallery col-xs-12 col-sm-6 col-md-4");
+
+		// <figure class="imageGallery col-xs-12 col-sm-6 col-md-4" style="background-image:url(images/landscape-1.jpg);">
+		// 	<figcaption>landscape-1.jpg</figcaption>
+		// </figure>
+	}
 	//use loops and jquery dom creation to make the html structure inside the #gallery section
 
 	//create a loop to go through the pictures
@@ -39,6 +53,16 @@ function makeGallery(imageArray){
 }
 
 function addModalCloseHandler(){
+	var img_url = $(this).css('background-image');
+
+	
+	img_url=img_url.slice(12,-2);
+	//img_url=
+	console.log(img_url);
+
+	$("#galleryModal > div > div > div.modal-body > img").attr("src", img_url);
+	$("#galleryModal").modal('show');
+
 	//add a click handler to the img element in the image modal.  When the element is clicked, close the modal
 	//for more info, check here: https://www.w3schools.com/bootstrap/bootstrap_ref_js_modal.asp	
 }
